@@ -1600,7 +1600,7 @@ def get_agent_contributions(agent_name: str) -> str:
         return f"❌ Error getting agent contributions: {str(e)}"
 
 gpt_model = OpenAIServerModel(
-    model_id="openai/gpt-5.2"
+    model_id="openai/gpt-5.2",
     api_base="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY_STRING,
     temperature=0.1
