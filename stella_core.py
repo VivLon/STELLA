@@ -752,7 +752,7 @@ Return JSON with top {max_tools} most relevant tools:
         
         # Use LLM to select tools intelligently
         try:
-            llm_response = json_llm_call(llm_prompt, "gemini-2.5-pro")
+            llm_response = json_llm_call(llm_prompt, "gpt-5.2")
             
             if "error" in llm_response:
                 # Fallback to simple keyword matching if LLM fails
@@ -1947,7 +1947,7 @@ def main():
                 'custom_instructions': '',  # 可以根据需要添加自定义指令
                 'authorized_imports': ', '.join([
                     "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas",
+                    "math", "statistics", "random", "numpy", "pandas","scanpy","anndata","h5py",
                     "collections", "itertools", "functools", "operator",
                     "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
                     "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
@@ -1984,23 +1984,8 @@ def main():
                 tools=manager_tool_management,  # 使用完整的工具管理权限
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports=[
-                    # Basic Python modules
-                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    # Math and science
-                    "math", "statistics", "random", 
-                    # Data science core (only if installed)
-                    "numpy", "pandas",
-                    # Collections and utilities
-                    "collections", "itertools", "functools", "operator",
-                    "typing", "dataclasses", "enum",
-                    # File formats
-                    "xml", "xml.etree", "xml.etree.ElementTree",
-                    # Networking
-                    "requests", "urllib", "urllib.parse", "http",
-                    # Text processing
-                    "re", "unicodedata", "string"
-                ],
+                additional_authorized_imports="*",
+                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant.
 
@@ -2035,13 +2020,8 @@ def main():
                 tools=manager_tool_management,  
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports=[
-                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas",
-                    "collections", "itertools", "functools", "operator",
-                    "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
-                    "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
-                ],
+                additional_authorized_imports="*",
+                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )
@@ -2162,7 +2142,7 @@ def initialize_stella(use_template=True, use_mem0=True):
                 'custom_instructions': '',
                 'authorized_imports': ', '.join([
                     "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas",
+                    "math", "statistics", "random", "numpy", "pandas","scanpy","anndata","h5py",
                     "collections", "itertools", "functools", "operator",
                     "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
                     "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
@@ -2198,16 +2178,8 @@ def initialize_stella(use_template=True, use_mem0=True):
                 tools=manager_tool_management,
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports=[
-                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", 
-                    "numpy", "pandas",
-                    "collections", "itertools", "functools", "operator",
-                    "typing", "dataclasses", "enum",
-                    "xml", "xml.etree", "xml.etree.ElementTree",
-                    "requests", "urllib", "urllib.parse", "http",
-                    "re", "unicodedata", "string"
-                ],
+                additional_authorized_imports="*",
+                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant with Simplified Workflow.
 
@@ -2242,13 +2214,8 @@ def initialize_stella(use_template=True, use_mem0=True):
                 tools=manager_tool_management,
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports=[
-                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas",
-                    "collections", "itertools", "functools", "operator",
-                    "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
-                    "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
-                ],
+                additional_authorized_imports="*",
+                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )

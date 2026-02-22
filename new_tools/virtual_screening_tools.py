@@ -83,7 +83,7 @@ def normalize_scores(scores: List[float], temperature: float = 1.0) -> List[floa
 
 
 @tool
-def kegg_pathway_search(query_list: List[str], model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+def kegg_pathway_search(query_list: List[str], model_name: str = "gpt-5.2") -> Dict[str, Any]:
     """
     Search and extract biological pathway information from the KEGG database. The KEGG (Kyoto Encyclopedia of Genes and Genomes) database is a comprehensive resource for understanding biological systems and their functions.
     
@@ -413,7 +413,7 @@ def string_database_search(
     score_cutoff: float = 0.9,
     species_id: int = 9606,
     limit: int = 1000,
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search for protein-protein interactions using the STRING database. The STRING (Search Tool for the Retrieval of Interacting Genes/Proteins) database is a biological database of known and predicted protein-protein interactions.
@@ -538,7 +538,7 @@ def go_terms_search(
     query_list: List[str],
     max_candidates: int = 100,
     similarity_threshold: int = 10,
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search for genes associated with Gene Ontology (GO) terms. Gene Ontology provides a controlled vocabulary of terms describing gene product characteristics and gene product annotation data across various databases.
@@ -744,7 +744,7 @@ def screen_data_analysis(
     effect_size_threshold: Optional[float] = None,
     top_n: Optional[int] = None,
     score_column: Optional[str] = None,
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Process and filter genetic screen data to identify significant genes based on statistical measures. Handles various formats of screen results, supporting filtering by p-values, effect sizes, or custom scoring.
@@ -910,7 +910,7 @@ def screen_data_analysis(
 def tcga_survival_analysis(
     cancer_types: List[str],
     threshold: float = 1.96,
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Identify genes associated with cancer survival from The Cancer Genome Atlas (TCGA) data. This tool analyzes multiple data types (CNA, methylation, gene expression, miRNA, and mutations) to find genes with significant associations to patient survival across different cancer types.
@@ -1154,7 +1154,7 @@ Response format:
 def drug_gene_network_search(
     drug_queries: List[str],
     graph_path: str = "resource/RxGrid/G_full.p",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Identify relationships between drugs and genes using a graph-based database. This tool can match potentially misspelled drug names to their correct counterparts and extract gene relationships from the RxGrid network.
@@ -1271,7 +1271,7 @@ def drug_gene_network_search(
 @tool
 def pubchem_drug_gene_search(
     drug_names: List[str],
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene associations for drugs from the PubChem database. PubChem is a comprehensive database of chemical substances and their biological activities. This tool retrieves drug information and uses LLM analysis to extract gene targets and associations.
@@ -1496,7 +1496,7 @@ If no gene associations are found, return an empty list for "genes" and set "gen
 
 
 @tool
-def hpo_phenotype_search(phenotype_terms: List[str], model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+def hpo_phenotype_search(phenotype_terms: List[str], model_name: str = "gpt-5.2") -> Dict[str, Any]:
     """
     Search and process Human Phenotype Ontology (HPO) database information. HPO provides a standardized vocabulary of phenotypic abnormalities encountered in human disease, allowing for the mapping of phenotypes to associated genes.
     
@@ -1623,7 +1623,7 @@ Response format:
 
 
 @tool
-def omim_disease_search(disease_terms: List[str], model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+def omim_disease_search(disease_terms: List[str], model_name: str = "gpt-5.2") -> Dict[str, Any]:
     """
     Search and extract gene-disease relationship information from the OMIM database. The OMIM (Online Mendelian Inheritance in Man) database is a comprehensive catalog of human genes and genetic disorders, focusing on the relationship between phenotype and genotype.
     
@@ -1729,7 +1729,7 @@ def omim_disease_search(disease_terms: List[str], model_name: str = "gemini-2.5-
 
 
 @tool
-def orphanet_rare_disease_search(disease_terms: List[str], model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+def orphanet_rare_disease_search(disease_terms: List[str], model_name: str = "gpt-5.2") -> Dict[str, Any]:
     """
     Search and process Orphanet rare disease database information. Orphanet is a comprehensive resource for information on rare diseases and orphan drugs, providing data on disease-gene associations.
     
@@ -2214,7 +2214,7 @@ def ensembl_paralog_search(gene_list: List[str], species: str = "human") -> Dict
 def gsea_hallmark_search(
     query_list: List[str], 
     json_directory: str = "resource/GSEA",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene set information from MSigDB JSON files. The MSigDB (Molecular Signatures Database) contains collections of annotated gene sets for use with gene set enrichment analysis including hallmark pathways, curated gene sets, and regulatory motifs.
@@ -2398,7 +2398,7 @@ Response format:
 def wikipathways_search(
     query_list: List[str], 
     json_directory: str = "resource/WikiPathways",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene set information from WikiPathways JSON files. WikiPathways is a database of biological pathways maintained by the community, containing diverse pathway information across multiple organisms including metabolic pathways, signaling cascades, and disease pathways.
@@ -2582,7 +2582,7 @@ Response format:
 def reactome_pathway_search(
     query_list: List[str], 
     json_directory: str = "resource/Reactome",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene set information from Reactome JSON files. Reactome is an open-source, curated and peer-reviewed pathway database that provides detailed information about biological pathways, reactions, and cellular processes across different species.
@@ -2766,7 +2766,7 @@ Response format:
 def cancer_biomarkers_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/cancerbiomarkers.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from Cancer Biomarkers database. The Cancer Biomarkers database features biomarkers of drug sensitivity, resistance, and toxicity for drugs targeting specific targets in cancer, curated by clinical and scientific experts in precision oncology, and classified by cancer type.
@@ -2951,7 +2951,7 @@ Response format:
 def clingen_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/clingen.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from ClinGen database. The Clinical Genome Resource (ClinGen) Gene-Disease Validity Curation evaluates the strength of evidence supporting or refuting claims that variation in a particular gene causes a particular disease, providing a framework to assess clinical validity in a semi-quantitative manner.
@@ -3174,7 +3174,7 @@ Response format:
 def gene2phenotype_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/gene2phenotype.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from Gene2Phenotype database. The data in Gene2Phenotype (G2P) is produced and curated from the literature by different sets of panels formed by consultant clinical geneticists. The G2P data is designed to facilitate the development, validation, curation, and distribution of large-scale, evidence-based datasets for use in diagnostic variant filtering.
@@ -3401,7 +3401,7 @@ Response format:
 def gene_burden_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/gene_burden.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from Gene Burden database. Gene burden data comprises gene–phenotype relationships observed in gene-level association tests using rare variant collapsing analyses. These associations result from collapsing rare variants in a gene into a single burden statistic and regressing the phenotype on the burden statistic to test for the combined effects of all rare variants in that gene.
@@ -3628,7 +3628,7 @@ Response format:
 def intogen_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/intogen.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from IntOGen database. IntOGen provides a framework to identify potential cancer driver genes using large-scale mutational data from sequenced tumor samples. By harmonising tumor sequencing data from the ICGC/TCGA Pan-Cancer Analysis of Whole Genomes (PCAWG) and other comprehensive efforts, IntOGen aims to provide a consensus assessment of cancer driver genes.
@@ -3849,7 +3849,7 @@ Response format:
 def gocc_cellular_component_search(
     query_list: List[str], 
     json_directory: str = "resource/GOCC",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from Gene Ontology Cellular Component (GOCC) database. The Gene Ontology (GO) Cellular Component ontology describes locations at the levels of subcellular structures and macromolecular complexes. This tool identifies genes associated with specific cellular components, organelles, and subcellular locations.
@@ -4041,7 +4041,7 @@ def clinvar_search(
     json_path: str = "resource/Open_target/eva.json",
     max_candidates: int = 100,
     similarity_threshold: int = 50,
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from ClinVar database. ClinVar is a NIH public archive of reports of the relationships among human variations and phenotypes, with supporting evidence. This tool extracts gene information based on disease associations from the ClinVar database, using clinical significance and confidence levels to calculate evidence scores.
@@ -4386,7 +4386,7 @@ Response format:
 def uniprot_variants_search(
     query_list: List[str], 
     json_path: str = "resource/Open_target/uniprot_variants.json",
-    model_name: str = "gemini-2.5-pro"
+    model_name: str = "gpt-5.2"
 ) -> Dict[str, Any]:
     """
     Search and extract gene information from UniProt Variants database. UniProt provides comprehensive information about proteins and their variants associated with diseases. This tool extracts gene information based on disease associations from the UniProt database, converting UniProt IDs to gene symbols.

@@ -241,7 +241,7 @@ def search_with_serpapi(query: str, num_results: int = 5) -> str:
 
 
 @tool 
-def enhanced_knowledge_search(query: str, model_name: str = "gemini-2.5-pro") -> str:
+def enhanced_knowledge_search(query: str, model_name: str = "gpt-5.2") -> str:
     """Use LLM's internal knowledge to provide detailed information.
     
     Args:
@@ -272,7 +272,7 @@ Please provide:
 Be comprehensive and accurate."""
 
         payload = {
-            "model": f"google/{model_name}",
+            "model": f"openai/{model_name}",
             "messages": [
                 {
                     "role": "system", 
