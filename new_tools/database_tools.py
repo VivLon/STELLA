@@ -76,7 +76,7 @@ def parse_hpo_obo(obo_file_path: str) -> Dict[str, str]:
     return hpo_dict
 
 gemini_model = OpenAIServerModel(
-    model_id="google/gemini-2.5-pro",
+    model_id="google/gemini-3.1-pro-preview",
     api_base="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY_STRING,
     temperature=0.1,  # Lower temperature for more consistent analysis

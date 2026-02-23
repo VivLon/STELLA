@@ -29,6 +29,7 @@ class LLMChat:
         # Common OpenRouter model configurations
         self.model_configs = {
             # OpenAI models via OpenRouter
+            "gpt-5.2": {"model": "openai/gpt-5.2", "temperature": 0.0, "supports_json": True},
             "gpt-4o": {"model": "openai/gpt-4o", "temperature": 0.0, "supports_json": True},
             "gpt-4o-mini": {"model": "openai/gpt-4o-mini", "temperature": 0.0, "supports_json": True},
             "gpt-4-turbo": {"model": "openai/gpt-4-turbo", "temperature": 0.0, "supports_json": True},
@@ -36,11 +37,13 @@ class LLMChat:
             "o1-mini": {"model": "openai/o1-mini", "temperature": None, "supports_json": False},
             
             # Anthropic models via OpenRouter
+            "claude-4.6-sonnet": {"model": "anthropic/claude-4.6-sonnet", "temperature": 0.0, "supports_json": True},
             "claude-3.5-sonnet": {"model": "anthropic/claude-3.5-sonnet", "temperature": 0.0, "supports_json": True},
             "claude-3-opus": {"model": "anthropic/claude-3-opus", "temperature": 0.0, "supports_json": True},
             "claude-3-haiku": {"model": "anthropic/claude-3-haiku", "temperature": 0.0, "supports_json": True},
             
             # Google models via OpenRouter
+            "gemini-3.1-pro-preview": {"model": "google/gemini-3.1-pro-preview", "temperature": 0.0, "supports_json": True},
             "gemini-2.5-pro": {"model": "google/gemini-2.5-pro", "temperature": 0.0, "supports_json": True},
             "gemini-2.0-flash": {"model": "google/gemini-2.0-flash-exp", "temperature": 0.0, "supports_json": True},
             "gemini-1.5-pro": {"model": "google/gemini-pro-1.5", "temperature": 0.0, "supports_json": True},
@@ -52,10 +55,10 @@ class LLMChat:
             "qwen-2.5-72b": {"model": "qwen/qwen-2.5-72b-instruct", "temperature": 0.0, "supports_json": True},
             
             # Default fallback
-            "default": {"model": "google/gemini-2.5-pro", "temperature": 0.0, "supports_json": True}
+            "default": {"model": "google/gemini-3.1-pro-preview", "temperature": 0.0, "supports_json": True}
         }
     
-    def chat(self, request: str, model_name: str = "gemini-2.5-pro", 
+    def chat(self, request: str, model_name: str = "gemini-3.1-pro-preview", 
              temperature: Optional[float] = None, 
              json_mode: bool = False,
              max_tokens: Optional[int] = None,
@@ -152,7 +155,7 @@ class LLMChat:
         """Get list of available model names"""
         return list(self.model_configs.keys())
     
-    def simple_chat(self, request: str, model_name: str = "gemini-2.5-pro") -> str:
+    def simple_chat(self, request: str, model_name: str = "gemini-3.1-pro-preview") -> str:
         """
         Simple chat method that returns just the response content
         
@@ -168,7 +171,7 @@ class LLMChat:
             return f"Error: {result['error']}"
         return result["response"]
     
-    def json_chat(self, request: str, model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+    def json_chat(self, request: str, model_name: str = "gemini-3.1-pro-preview") -> Dict[str, Any]:
         """
         Chat method that forces JSON response format
         
@@ -195,7 +198,7 @@ def get_llm_client(api_key: Optional[str] = None) -> LLMChat:
         _llm_instance = LLMChat(api_key=api_key)
     return _llm_instance
 
-def simple_llm_call(request: str, model_name: str = "gemini-2.5-pro") -> str:
+def simple_llm_call(request: str, model_name: str = "gemini-3.1-pro-preview") -> str:
     """
     Simple function for making LLM calls
     
@@ -209,7 +212,7 @@ def simple_llm_call(request: str, model_name: str = "gemini-2.5-pro") -> str:
     client = get_llm_client()
     return client.simple_chat(request, model_name)
 
-def json_llm_call(request: str, model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
+def json_llm_call(request: str, model_name: str = "gemini-3.1-pro-preview") -> Dict[str, Any]:
     """
     Function for making LLM calls with JSON response
     

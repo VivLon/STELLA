@@ -752,7 +752,7 @@ Return JSON with top {max_tools} most relevant tools:
         
         # Use LLM to select tools intelligently
         try:
-            llm_response = json_llm_call(llm_prompt, "gemini-2.5-pro")
+            llm_response = json_llm_call(llm_prompt, "gemini-3.1-pro-preview")
             
             if "error" in llm_response:
                 # Fallback to simple keyword matching if LLM fails
@@ -1601,14 +1601,14 @@ def get_agent_contributions(agent_name: str) -> str:
 
 
 claude_model = OpenAIServerModel(
-    model_id="anthropic/claude-sonnet-4",
+    model_id="anthropic/claude-sonnet-4.6",
     api_base="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY_STRING,
 )
 
 # Create a more capable model for manager and critic agents
 gemini_model = OpenAIServerModel(
-    model_id="google/gemini-2.5-pro",
+    model_id="google/gemini-3.1-pro-preview",
     api_base="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY_STRING,
     temperature=0.1,  # Lower temperature for more consistent analysis
