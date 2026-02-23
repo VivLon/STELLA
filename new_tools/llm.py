@@ -29,7 +29,6 @@ class LLMChat:
         # Common OpenRouter model configurations
         self.model_configs = {
             # OpenAI models via OpenRouter
-            "gpt-5.2": {"model": "openai/gpt-5.2", "temperature": 0.0, "supports_json": True},
             "gpt-4o": {"model": "openai/gpt-4o", "temperature": 0.0, "supports_json": True},
             "gpt-4o-mini": {"model": "openai/gpt-4o-mini", "temperature": 0.0, "supports_json": True},
             "gpt-4-turbo": {"model": "openai/gpt-4-turbo", "temperature": 0.0, "supports_json": True},
@@ -56,7 +55,7 @@ class LLMChat:
             "default": {"model": "google/gemini-2.5-pro", "temperature": 0.0, "supports_json": True}
         }
     
-    def chat(self, request: str, model_name: str = "gpt-5.2", 
+    def chat(self, request: str, model_name: str = "gemini-2.5-pro", 
              temperature: Optional[float] = None, 
              json_mode: bool = False,
              max_tokens: Optional[int] = None,
@@ -153,7 +152,7 @@ class LLMChat:
         """Get list of available model names"""
         return list(self.model_configs.keys())
     
-    def simple_chat(self, request: str, model_name: str = "gpt-5.2") -> str:
+    def simple_chat(self, request: str, model_name: str = "gemini-2.5-pro") -> str:
         """
         Simple chat method that returns just the response content
         
@@ -169,7 +168,7 @@ class LLMChat:
             return f"Error: {result['error']}"
         return result["response"]
     
-    def json_chat(self, request: str, model_name: str = "gpt-5.2") -> Dict[str, Any]:
+    def json_chat(self, request: str, model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
         """
         Chat method that forces JSON response format
         
@@ -196,7 +195,7 @@ def get_llm_client(api_key: Optional[str] = None) -> LLMChat:
         _llm_instance = LLMChat(api_key=api_key)
     return _llm_instance
 
-def simple_llm_call(request: str, model_name: str = "gpt-5.2") -> str:
+def simple_llm_call(request: str, model_name: str = "gemini-2.5-pro") -> str:
     """
     Simple function for making LLM calls
     
@@ -210,7 +209,7 @@ def simple_llm_call(request: str, model_name: str = "gpt-5.2") -> str:
     client = get_llm_client()
     return client.simple_chat(request, model_name)
 
-def json_llm_call(request: str, model_name: str = "gpt-5.2") -> Dict[str, Any]:
+def json_llm_call(request: str, model_name: str = "gemini-2.5-pro") -> Dict[str, Any]:
     """
     Function for making LLM calls with JSON response
     

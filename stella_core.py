@@ -752,7 +752,7 @@ Return JSON with top {max_tools} most relevant tools:
         
         # Use LLM to select tools intelligently
         try:
-            llm_response = json_llm_call(llm_prompt, "gpt-5.2")
+            llm_response = json_llm_call(llm_prompt, "gemini-2.5-pro")
             
             if "error" in llm_response:
                 # Fallback to simple keyword matching if LLM fails
@@ -1599,12 +1599,6 @@ def get_agent_contributions(agent_name: str) -> str:
     except Exception as e:
         return f"❌ Error getting agent contributions: {str(e)}"
 
-gpt_model = OpenAIServerModel(
-    model_id="openai/gpt-5.2",
-    api_base="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY_STRING,
-    temperature=0.1
-)
 
 claude_model = OpenAIServerModel(
     model_id="anthropic/claude-sonnet-4",
@@ -1755,7 +1749,7 @@ all_tools = base_tools + mcp_tools
 
 dev_agent = ToolCallingAgent(
     tools=all_tools,
-    model=gpt_model,
+    model=gemini_model,
     max_steps=15,  # Reduced from 20 to improve performance
     name="dev_agent",
     description="""A specialist agent for code execution and environment management.
@@ -1804,7 +1798,7 @@ tool_creation_tools = [
 
 tool_creation_agent = ToolCallingAgent(
     tools=tool_creation_tools,
-    model=gpt_model,
+    model=claude_model,
     max_steps=20,  # Reduced from 25
     name="tool_creation_agent",
     description="""A specialized agent for creating new Python tools and utilities.
@@ -1853,7 +1847,7 @@ critic_tools = [
 
 critic_agent = ToolCallingAgent(
     tools=critic_tools,  # ✅ Fixed: Added necessary tools
-    model=gpt_model,
+    model=claude_model,
     max_steps=5,  # Reduced from 8
     name="critic_agent", 
     description="""Expert critic agent that evaluates task completion quality and determines if specialized tools are needed.
@@ -1891,7 +1885,7 @@ manager_agent = None
 # --- Launch Gradio Interface ---
 def main():
     """Launch the Gradio interface for interactive agent communication with optional knowledge base."""
-    global global_memory_manager, use_templates, gpt_model
+    global global_memory_manager, use_templates, gemini_model
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Stella - Self-Evolving AI Assistant with Enhanced Memory")
@@ -1947,7 +1941,7 @@ def main():
                 'custom_instructions': '',  # 可以根据需要添加自定义指令
                 'authorized_imports': ', '.join([
                     "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas","scanpy","anndata","h5py",
+                    "math", "statistics", "random", "numpy", "pandas",
                     "collections", "itertools", "functools", "operator",
                     "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
                     "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
@@ -1984,7 +1978,23 @@ def main():
                 tools=manager_tool_management,  # 使用完整的工具管理权限
                 model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports="*",
+                additional_authorized_imports=[
+                    # Basic Python modules
+                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
+                    # Math and science
+                    "math", "statistics", "random", 
+                    # Data science core (only if installed)
+                    "numpy", "pandas",
+                    # Collections and utilities
+                    "collections", "itertools", "functools", "operator",
+                    "typing", "dataclasses", "enum",
+                    # File formats
+                    "xml", "xml.etree", "xml.etree.ElementTree",
+                    # Networking
+                    "requests", "urllib", "urllib.parse", "http",
+                    # Text processing
+                    "re", "unicodedata", "string"
+                ],
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant.
 
@@ -2019,7 +2029,13 @@ def main():
                 tools=manager_tool_management,  
                 model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports="*",
+                additional_authorized_imports=[
+                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
+                    "math", "statistics", "random", "numpy", "pandas",
+                    "collections", "itertools", "functools", "operator",
+                    "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
+                    "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
+                ],
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )
@@ -2050,7 +2066,7 @@ def main():
             # 初始化新的统一内存管理系统
             print("🧠 Initializing memory system...")
             global_memory_manager = MemoryManager(
-                gemini_model=gpt_model,
+                gemini_model=gemini_model,
                 use_mem0=args.use_mem0,
                 mem0_api_key=MEM0_API_KEY,
                 openrouter_api_key=OPENROUTER_API_KEY_STRING
@@ -2084,7 +2100,7 @@ def main():
         print("🔧 Creating emergency fallback manager agent...")
         manager_agent = CodeAgent(
             tools=manager_tool_management[:3],  # Use only first 3 tools to avoid issues
-            model=gpt_model,
+            model=grok_model,
             managed_agents=[dev_agent],  # Minimal agents
             name="emergency_manager",
             description="Emergency fallback manager agent"
@@ -2106,7 +2122,7 @@ def main():
 # --- Initialize function for external usage ---
 def initialize_stella(use_template=True, use_mem0=True):
     """Initialize Stella without launching Gradio interface - for use by other UIs"""
-    global global_memory_manager, use_templates, custom_prompt_templates, manager_agent, gpt_model
+    global global_memory_manager, use_templates, custom_prompt_templates, manager_agent, gemini_model
     
     use_templates = use_template
     
@@ -2140,7 +2156,7 @@ def initialize_stella(use_template=True, use_mem0=True):
                 'custom_instructions': '',
                 'authorized_imports': ', '.join([
                     "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
-                    "math", "statistics", "random", "numpy", "pandas","scanpy","anndata","h5py",
+                    "math", "statistics", "random", "numpy", "pandas",
                     "collections", "itertools", "functools", "operator",
                     "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
                     "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
@@ -2174,9 +2190,18 @@ def initialize_stella(use_template=True, use_mem0=True):
             print("✅ Custom prompt templates rendered with Jinja variables")
             manager_agent = CodeAgent(
                 tools=manager_tool_management,
-                model=gpt_model,
+                model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports="*",
+                additional_authorized_imports=[
+                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
+                    "math", "statistics", "random", 
+                    "numpy", "pandas",
+                    "collections", "itertools", "functools", "operator",
+                    "typing", "dataclasses", "enum",
+                    "xml", "xml.etree", "xml.etree.ElementTree",
+                    "requests", "urllib", "urllib.parse", "http",
+                    "re", "unicodedata", "string"
+                ],
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant with Simplified Workflow.
 
@@ -2209,9 +2234,15 @@ def initialize_stella(use_template=True, use_mem0=True):
             # Use default templates
             manager_agent = CodeAgent(
                 tools=manager_tool_management,
-                model=gpt_model,
+                model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
-                additional_authorized_imports="*",
+                additional_authorized_imports=[
+                    "time", "datetime", "os", "sys", "json", "csv", "pickle", "pathlib",
+                    "math", "statistics", "random", "numpy", "pandas",
+                    "collections", "itertools", "functools", "operator",
+                    "typing", "dataclasses", "enum", "xml", "xml.etree", "xml.etree.ElementTree",
+                    "requests", "urllib", "urllib.parse", "http", "re", "unicodedata", "string"
+                ],
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )
@@ -2232,7 +2263,7 @@ def initialize_stella(use_template=True, use_mem0=True):
         print("📚 Initializing knowledge base...")
         try:
             global_memory_manager = MemoryManager(
-                gemini_model=gpt_model,
+                gemini_model=gemini_model,
                 use_mem0=use_mem0,
                 mem0_api_key=MEM0_API_KEY,
                 openrouter_api_key=OPENROUTER_API_KEY_STRING

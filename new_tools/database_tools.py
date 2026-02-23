@@ -75,15 +75,8 @@ def parse_hpo_obo(obo_file_path: str) -> Dict[str, str]:
         
     return hpo_dict
 
-# gemini_model = OpenAIServerModel(
-#     model_id="google/gemini-2.5-pro",
-#     api_base="https://openrouter.ai/api/v1",
-#     api_key=OPENROUTER_API_KEY_STRING,
-#     temperature=0.1,  # Lower temperature for more consistent analysis
-# )
-
-gpt_model = OpenAIServerModel(
-    model_id="openai/gpt-5.2",
+gemini_model = OpenAIServerModel(
+    model_id="google/gemini-2.5-pro",
     api_base="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY_STRING,
     temperature=0.1,  # Lower temperature for more consistent analysis
@@ -104,7 +97,7 @@ def _query_gemini_for_api(prompt, schema, system_template, model=None):
     dict: Dictionary with 'success', 'data' (if successful), 'error' (if failed), and optional 'raw_response'
     """
     # Use global gemini_model if none provided
-    model = gpt_model
+    model = gemini_model
     
     try:
         if schema is not None:
