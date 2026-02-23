@@ -1982,10 +1982,9 @@ def main():
             print("✅ Custom prompt templates rendered with Jinja variables")
             manager_agent = CodeAgent(
                 tools=manager_tool_management,  # 使用完整的工具管理权限
-                model=gpt_model,
+                model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
                 additional_authorized_imports="*",
-                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant.
 
@@ -2018,10 +2017,9 @@ def main():
             # Use default templates
             manager_agent = CodeAgent(
                 tools=manager_tool_management,  
-                model=gpt_model,
+                model=grok_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
                 additional_authorized_imports="*",
-                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )
@@ -2038,7 +2036,7 @@ def main():
         print("🔄 Creating basic manager agent without custom prompts...")
         manager_agent = CodeAgent(
             tools=manager_tool_management,
-            model=gpt_model,
+            model=grok_model,
             managed_agents=[dev_agent, critic_agent, tool_creation_agent],
             name="manager_agent",
             description="Basic manager agent"
@@ -2179,7 +2177,6 @@ def initialize_stella(use_template=True, use_mem0=True):
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
                 additional_authorized_imports="*",
-                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""STELLA - Self-Evolving Laboratory Assistant with Simplified Workflow.
 
@@ -2215,7 +2212,6 @@ def initialize_stella(use_template=True, use_mem0=True):
                 model=gpt_model,
                 managed_agents=[dev_agent, critic_agent, tool_creation_agent],
                 additional_authorized_imports="*",
-                allow_shell_commands=True,
                 name="manager_agent", 
                 description="""The main coordinator agent with self-evolution capabilities and tool management.""",
             )
